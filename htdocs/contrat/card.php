@@ -940,8 +940,12 @@ if ($action == 'create')
     } else {
     	$tmpcode='<input name="ref" size="20" maxlength="128" value="'.dol_escape_htmltag(GETPOST('ref')?GETPOST('ref'):$tmpcode).'">';
     }
-	print '<tr><td class="fieldrequired">'.$langs->trans('Ref').'</td><td colspan="2">'.$tmpcode.'</td></tr>';
+    //COMMERCE EFFICACE - Debut : Permet de modifier le numéro de contrat
+    print '<tr><td class="fieldrequired">'.$langs->trans('Ref').'</td>
+	<td><input type="text" maxlength="30" name="ref" size="20" value="'.$numct.'"></td></tr>';
+    //print '<tr><td class="fieldrequired">'.$langs->trans('Ref').'</td><td colspan="2">'.$tmpcode.'</td></tr>';
 
+    //COMMERCE EFFICACE - Fin : Permet de modifier le numéro de contrat
 	// Ref supplier
 	print '<tr><td>'.$langs->trans('RefSupplier').'</td>';
 	print '<td colspan="2"><input type="text" size="5" name="ref_supplier" id="ref_supplier" value="'.GETPOST('ref_supplier','alpha').'"></td></tr>';

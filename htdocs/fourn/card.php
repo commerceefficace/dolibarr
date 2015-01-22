@@ -473,7 +473,10 @@ if ($object->fetch($id))
 	if ($user->rights->fournisseur->facture->creer)
 	{
 		$langs->load("bills");
-		print '<a class="butAction" href="'.DOL_URL_ROOT.'/fourn/facture/card.php?action=create&socid='.$object->id.'">'.$langs->trans("AddBill").'</a>';
+		//COMMERCE EFFICACE : DEBUT - Changer Créer facture ou avoir par Créer courrier
+		//print '<a class="butAction" href="'.DOL_URL_ROOT.'/fourn/facture/card.php?action=create&socid='.$object->id.'">'.$langs->trans("AddBill").'</a>';
+		print '<a class="butAction" href="'.DOL_URL_ROOT.'/fourn/facture/fiche.php?action=create&socid='.$object->id.'">'.'Créer courrier fournisseur'.'</a>';
+		//COMMERCE EFFICACE : FIN - Changer Créer facture ou avoir par Créer courrier
 	}
 
 	if ($user->rights->fournisseur->facture->creer)

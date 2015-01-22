@@ -271,9 +271,11 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 					$nexY = $pdf->GetY();
 					$height_note=$nexY-$tab_top;
 
+					//COMMERCE EFFICACE - Debut : Suppression du rectangle
 					// Rect prend une longueur en 3eme param
-					$pdf->SetDrawColor(192,192,192);
-					$pdf->Rect($this->marge_gauche, $tab_top-1, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $height_note+1);
+					/*$pdf->SetDrawColor(192,192,192);
+					$pdf->Rect($this->marge_gauche, $tab_top-1, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $height_note+1);*/
+					//COMMERCE EFFICACE - Fin : Suppression du rectangle
 
 					$tab_height = $tab_height - $height_note;
 					$tab_top = $nexY+6;
@@ -355,13 +357,17 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 	       				$pdf->MultiCell($this->posxup-$this->posxtva-1, 3, $vat_rate, 0, 'R');
                     }
 
+                    //COMMERCE EFFICACE : DEBUT - Suppression du champ Prix unitaire
 					// Unit price before discount
-					$pdf->SetXY($this->posxup, $curY);
-					$pdf->MultiCell($this->posxqty-$this->posxup-0.8, 3, price($object->lines[$i]->pu_ht), 0, 'R', 0);
+					/*$pdf->SetXY($this->posxup, $curY);
+					$pdf->MultiCell($this->posxqty-$this->posxup-0.8, 3, price($object->lines[$i]->pu_ht), 0, 'R', 0);*/
+					//COMMERCE EFFICACE : FIN - Suppression du champ Prix unitaire
 
+					//COMMERCE EFFICACE : DEBUT - Suppression du champ quantité
 					// Quantity
-					$pdf->SetXY($this->posxqty, $curY);
-					$pdf->MultiCell($this->posxdiscount-$this->posxqty-0.8, 3, $object->lines[$i]->qty, 0, 'R');
+					/*$pdf->SetXY($this->posxqty, $curY);
+					$pdf->MultiCell($this->posxdiscount-$this->posxqty-0.8, 3, $object->lines[$i]->qty, 0, 'R');*/
+					//COMMERCE EFFICACE : FIN - Suppression du champ quantité
 
 					// Discount on line
 					$pdf->SetXY($this->posxdiscount, $curY);
@@ -370,10 +376,12 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 						$pdf->MultiCell($this->postotalht-$this->posxdiscount-1, 3, $object->lines[$i]->remise_percent."%", 0, 'R');
 					}
 
+					//COMMERCE EFFICACE : DEBUT - Suppression du champ Total HT
 					// Total HT line
-                    $total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs);
+                    /*$total_excl_tax = pdf_getlinetotalexcltax($object, $i, $outputlangs);
                     $pdf->SetXY($this->postotalht, $curY);
-                    $pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);
+                    $pdf->MultiCell($this->page_largeur-$this->marge_droite-$this->postotalht, 3, $total_excl_tax, 0, 'R', 0);*/
+					//COMMERCE EFFICACE : FIN - Suppression du champ Total HT
 
 					// Collecte des totaux par valeur de tva dans $this->tva["taux"]=total_tva
 					$tvaligne=$object->lines[$i]->total_tva;
@@ -456,8 +464,9 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 					$bottomlasttab=$this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
 				}
 
+				//COMMERCE EFFICACE : DEBUT - Suppression des totaux et des règlements
 				// Affiche zone totaux
-				$posy=$this->_tableau_tot($pdf, $object, $deja_regle, $bottomlasttab, $outputlangs);
+				/*$posy=$this->_tableau_tot($pdf, $object, $deja_regle, $bottomlasttab, $outputlangs);
 
 				$amount_credit_notes_included=0;
 				$amount_deposits_included=0;
@@ -465,7 +474,8 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 				if ($deja_regle || $amount_credit_notes_included || $amount_deposits_included)
 				{
 					$posy=$this->_tableau_versements($pdf, $object, $posy, $outputlangs);
-				}
+				}*/
+				//COMMERCE EFFICACE : FIN - Suppression des totaux et des règlements
 
 				// Pied de page
 				$this->_pagefoot($pdf, $object, $outputlangs);
@@ -722,7 +732,8 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 		$pdf->SetTextColor(0,0,0);
 		$pdf->SetFont('','',$default_font_size - 2);
 
-		if (empty($hidetop))
+		//COMMERCE EFFICACE - DEBUT : Supression de l'expression : "Montants exprimés en Euro"
+		/*if (empty($hidetop))
 		{
 			$titre = $outputlangs->transnoentities("AmountInCurrency",$outputlangs->transnoentitiesnoconv("Currency".$conf->currency));
 			$pdf->SetXY($this->page_largeur - $this->marge_droite - ($pdf->GetStringWidth($titre) + 3), $tab_top-4);
@@ -730,7 +741,8 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 
 			//$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR='230,230,230';
 			if (! empty($conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR)) $pdf->Rect($this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_droite-$this->marge_gauche, 5, 'F', null, explode(',',$conf->global->MAIN_PDF_TITLE_BACKGROUND_COLOR));
-		}
+		}*/
+		//COMMERCE EFFICACE - FIN : Supression de l'expression : "Montants exprimés en Euro"
 
 		$pdf->SetDrawColor(128,128,128);
 		$pdf->SetFont('','', $default_font_size - 1);
@@ -738,13 +750,15 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 		// Output Rect
 		$this->printRect($pdf,$this->marge_gauche, $tab_top, $this->page_largeur-$this->marge_gauche-$this->marge_droite, $tab_height, $hidetop, $hidebottom);	// Rect prend une longueur en 3eme param et 4eme param
 
-		if (empty($hidetop))
+		//COMMERCE EFFICACE : DEBUT - Suppression de l'entete Designation
+		/*if (empty($hidetop))
 		{
 			$pdf->line($this->marge_gauche, $tab_top+5, $this->page_largeur-$this->marge_droite, $tab_top+5);	// line prend une position y en 2eme param et 4eme param
 
 			$pdf->SetXY($this->posxdesc-1, $tab_top+1);
 			$pdf->MultiCell(108,2, $outputlangs->transnoentities("Designation"),'','L');
-		}
+		}*/
+		//COMMERCE EFFICACE : FIN - Suppression de l'entete Designation
 
         if (empty($conf->global->MAIN_GENERATE_DOCUMENTS_WITHOUT_VAT))
         {
@@ -756,21 +770,26 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 			}
         }
 
-		$pdf->line($this->posxup-1, $tab_top, $this->posxup-1, $tab_top + $tab_height);
+		//COMMERCE EFFICACE : DEBUT - Suppression de l'entete Total HT
+		/*$pdf->line($this->posxup-1, $tab_top, $this->posxup-1, $tab_top + $tab_height);
 		if (empty($hidetop))
 		{
 			$pdf->SetXY($this->posxup-1, $tab_top+1);
 			$pdf->MultiCell($this->posxqty-$this->posxup-1,2, $outputlangs->transnoentities("PriceUHT"),'','C');
-		}
+		}*/
+		//COMMERCE EFFICACE : FIN - Suppression de l'entete Total HT
 
-		$pdf->line($this->posxqty-1, $tab_top, $this->posxqty-1, $tab_top + $tab_height);
+		//COMMERCE EFFICACE : DEBUT - Suppression de la Quantite
+		/*$pdf->line($this->posxqty-1, $tab_top, $this->posxqty-1, $tab_top + $tab_height);
 		if (empty($hidetop))
 		{
 			$pdf->SetXY($this->posxqty-1, $tab_top+1);
 			$pdf->MultiCell($this->posxdiscount-$this->posxqty-1,2, $outputlangs->transnoentities("Qty"),'','C');
-		}
+		}*/
+		//COMMERCE EFFICACE : FIN - Suppression de la Quantite
 
-		$pdf->line($this->posxdiscount-1, $tab_top, $this->posxdiscount-1, $tab_top + $tab_height);
+		//COMMERCE EFFICACE : DEBUT - Suppression trait de la dernière colonne
+		/*$pdf->line($this->posxdiscount-1, $tab_top, $this->posxdiscount-1, $tab_top + $tab_height);
 		if (empty($hidetop))
 		{
 			if ($this->atleastonediscount)
@@ -778,17 +797,19 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 				$pdf->SetXY($this->posxdiscount-1, $tab_top+1);
 				$pdf->MultiCell($this->postotalht-$this->posxdiscount+1,2, $outputlangs->transnoentities("ReductionShort"),'','C');
 			}
-		}
-
-		if ($this->atleastonediscount)
+		}if ($this->atleastonediscount)
 		{
 			$pdf->line($this->postotalht, $tab_top, $this->postotalht, $tab_top + $tab_height);
-		}
-		if (empty($hidetop))
+		}*/
+		//COMMERCE EFFICACE : FIN - Suppression trait de la dernière colonne
+		
+		//COMMERCE EFFICACE : DEBUT - Suppression de la Total HT
+		/*if (empty($hidetop))
 		{
 			$pdf->SetXY($this->postotalht-1, $tab_top+1);
 			$pdf->MultiCell(30,2, $outputlangs->transnoentities("TotalHTShort"),'','C');
-		}
+		}*/
+		//COMMERCE EFFICACE : FIN - Suppression de la Total HT
 
 	}
 
@@ -926,14 +947,37 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 		}
 		else
 		{*/
-			$text=$this->emetteur->name;
-			$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($text), 0, 'L');
+			//COMMERCE EFFICACE - DEBUT : Suppression nom fournisseur
+			/*$text=$this->emetteur->name;
+			$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($text), 0, 'L');*/
+			//COMMERCE EFFICACE - FIN : Suppression nom fournisseur
 		//}
 
+		//COMMERCE EFFICACE - DEBUT : Ajout du logo dans l'entete
+		// Logo
+		$logo=$conf->mycompany->dir_output.'/logos/image003.png';
+		if (is_readable($logo))
+		{
+			$height=pdf_getHeightForLogo($logo);
+			$pdf->Image($logo, $this->marge_gauche, $posy, 0, $height);	// width=0 (auto)
+		}
+		else
+		{
+			$pdf->SetTextColor(200,0,0);
+			$pdf->SetFont('','B',$default_font_size - 2);
+			$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorLogoFileNotFound",$logo), 0, 'L');
+			$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorGoToGlobalSetup"), 0, 'L');
+		}
+		
+		//COMMERCE EFFICACE - FIN : Ajout du logo dans l'entete		
+		
 		$pdf->SetFont('','B', $default_font_size + 3);
 		$pdf->SetXY($posx,$posy);
 		$pdf->SetTextColor(0,0,60);
-		$pdf->MultiCell(100, 3, $outputlangs->transnoentities("SupplierInvoice")." ".$outputlangs->convToOutputCharset($object->ref), '', 'R');
+		//COMMERCE EFFICACE - DEBUT : Remplacement du champ Facture Fournisseur par Courrier Fournisseur
+		//$pdf->MultiCell(100, 3, $outputlangs->transnoentities("SupplierInvoice")." ".$outputlangs->convToOutputCharset($object->ref), '', 'R');
+		$pdf->MultiCell(100, 3, "Courrier Fournisseur ".$outputlangs->convToOutputCharset($object->ref), '', 'R');
+		//COMMERCE EFFICACE - FIN : Remplacement du champ Facture Fournisseur par Courrier Fournisseur
 
 		$pdf->SetFont('','B', $default_font_size);
 
@@ -991,15 +1035,19 @@ class pdf_canelle extends ModelePDFSuppliersInvoices
 			// Show sender name
 			$pdf->SetXY($posx+2,$posy+3);
 			$pdf->SetFont('','B', $default_font_size);
-			$pdf->MultiCell(80, 4, $outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
+			//$pdf->MultiCell(80, 4, $outputlangs->convToOutputCharset($this->emetteur->name), 0, 'L');
+			$pdf->MultiCell(80, 4, $carac_client_name, 0, 'L');
 			$posy=$pdf->getY();
 
 			// Show sender information
 			$pdf->SetXY($posx+2,$posy);
 			$pdf->SetFont('','', $default_font_size - 1);
-			$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
+			//$pdf->MultiCell(80, 4, $carac_emetteur, 0, 'L');
+			$pdf->MultiCell(80, 4, $carac_client, 0, 'L');
+				
+			//COMMERCE EFFICACE - FIN : Remplacement du l'expediteur par le destinataire
 
-
+			//COMMERCE EFFICACE - DEBUT : Remplacement du l'expediteur par le destinataire
 
 			// If BILLING contact defined on invoice, we use it
 			$usecontact=false;
